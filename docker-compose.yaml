@@ -1,0 +1,93 @@
+x-php-build: &php-build
+  context: ./.../docker/PHP
+  dockerfile: Dockerfile
+  args:
+    UID: ${UID:-1000}
+    GID: ${GID:-1000}
+
+
+
+x-app: &app
+  build: *php-build
+  working_dir: /var/www/html
+  tty: true
+  stdin_open: true
+  volumes:
+    - ./app:/var/www/html
+  networks:
+    - versotech
+
+
+
+services:
+  proxy:
+    build:
+      context: ./.../docker/NGINX
+      dockerfile: Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - '80:80'
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      php:
+        condition: service_started
+    networks:
+      - versotech
+
+  php:
+    <<: *app
+    ports:
+      - '9000:9000'
+
+  queue:
+    <<: *app
+    profiles: ['worker']
+    restart: unless-stopped
+    command: php artisan queue:work
+    init: true
+
+  scheduler:
+    <<: *app
+    profiles: ['worker']
+    restart: unless-stopped
+    command: sh -c 'while true; do php artisan schedule:run; sleep 60; done'
+    init: true
+
+  artisan:
+    <<: *app
+    profiles: ['tools']
+    entrypoint: ['php', '/var/www/html/artisan']
+    command: []
+    restart: 'no'
+
+  composer:
+    <<: *app
+    profiles: ['tools']
+    restart: 'no'
+    entrypoint: ['composer', '--ignore-platform-reqs']
+    command: []
+
+  npm:
+    profiles: ['tools']
+    restart: 'no'
+    image: node:current-alpine
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+      - '5173:5173'
+    working_dir: /var/www/html
+    entrypoint: ['npm']
+    command: []
+    init: true
+    networks:
+      - versotech
+
+
+
+networks:
+  versotech:

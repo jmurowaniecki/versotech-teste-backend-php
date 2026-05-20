@@ -1,4 +1,21 @@
 # Teste Técnico – Desenvolvedor PHP Laravel
+![NGINX](https://img.shields.io/badge/NGINX-1.30.1-009933?label=NGINX%20size&logo=nginx&logoColor=009933&style=flat-square)
+![NodeJS:26.1.0](https://img.shields.io/badge/NodeJS-26.1.0-6cc24a?size&logo=Node.JS&logoColor=6cc24a&style=flat-square)
+![PHP 8.4](https://img.shields.io/badge/php-8.4.0-1B09AB?size&logo=php&logoColor=1B09AB&style=flat-square)
+![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?size&logo=laravel&logoColor=FF2D20&style=flat-square)
+
+A criação da estrutura base foi realizada utilizando as ferramentas [λ.cli](https://github.com/jmurowaniecki/lambda), [λ{ ᴳᴿᴼᵁᴺᴰ … }](https://github.com/jmurowaniecki/ground) e [Cornerstone](https://github.com/jmurowaniecki/cornerstone), disponibilizando infraestrutura em Docker Compose com facilitação de uso via `Makefile`.
+
+```
+λ add {makefile,ion.{compose.{nginx,php-fpm},editorconfig}}
+```
+
+A criação do projeto inicial foi realizada com a execução do comando `composer create-project laravel/laravel app` na raiz do projeto utilizando o container `composer`, via `make tty-composer`.
+
+
+## Primeiros passos
+
+Para realizar a instalação e montagem dos containers execute o comando `make install` que é um alias para o comando `docker compose build --no-cache --pull`.
 
 ## Objetivo
 
