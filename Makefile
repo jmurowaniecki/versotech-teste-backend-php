@@ -41,20 +41,10 @@ tty-%: # Execute application with given profile.
 		--entrypoint sh \
 		--interactive $(*)
 
-artisan: # Execute Artisan command.
+run-%: # Execute Artisan, Composer or NPM command.
 	@docker compose run --rm \
 		--remove-orphans \
-		--interactive artisan  $(filter-out $@,$(MAKECMDGOALS))
-
-composer: # Execute Composer command.
-	@docker compose run --rm \
-		--remove-orphans \
-		--interactive composer $(filter-out $@,$(MAKECMDGOALS))
-
-npm: # Execute NPM command.
-	@docker compose run --rm \
-		--remove-orphans \
-		--interactive npm $(filter-out $@,$(MAKECMDGOALS))
+		--interactive $(*)  $(filter-out $@,$(MAKECMDGOALS))
 
 #
 # Code Quality and Tests
