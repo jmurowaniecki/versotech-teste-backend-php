@@ -9,7 +9,16 @@ Aplicação backend responsável pelo processamento, transformação e sincroniz
 
 ## Primeiros passos
 
-Para realizar a instalação e montagem dos containers execute o comando `make install` que é um alias para o comando `docker compose build --no-cache --pull`.
+### Instalação, build e configuração
+
+**Passo 1** - Para realizar a instalação e montagem dos containers execute o comando `make install` que é um alias para o comando `docker compose build --no-cache --pull`.
+
+**Passo 2** - Para execução das migrations e seed para criação das tabelas e carga inicial de dados você deve executar o comando `make run-artisan migrate` - ou simplesmente `./artisan migrate` dentro do container `artisan`.
+
+
+### Inicializando a aplicação
+
+Apesar da aplicação já responder a comandos no terminal como 
 
 
 ## Passo a passo da estrutura
@@ -59,44 +68,16 @@ Com as tabelas de origem e destino criadas, foi implemenatdo normalização dos 
 
 ## Processo de Sincronização
 
-A sincronização deve:
+A sincronização deve, consumir os dados a partir das views, inserirndo, atualizando ou removendo registros nas tabelas de destino, evitando duplicidade e operações desnecessárias. Para isso foi criado o comando Artisan `sync`:
 
-* Consumir os dados a partir das Views.
-* Inserir, atualizar ou remover registros nas tabelas de destino.
-* Evitar duplicidade.
-* Evitar operações desnecessárias.
+```Makefile
+Description:
+  Sincroniza produtos da view normalizada preços, produtos ou ambos.
 
----
+Usage:
+  sync <type>
 
-## API REST
+Arguments:
+  type                  ambos|precos|produtos
+```
 
-A aplicação deve disponibilizar os seguintes endpoints:
-
-### Sincronizar Produtos
-
-POST /api/sincronizar/produtos
-
-Executa o processo de transformação e sincronização dos dados de `produtos_base` para `produto_insercao`.
-
----
-
-### Sincronizar Preços
-
-POST /api/sincronizar/precos
-
-Executa o processo de transformação e sincronização dos dados de `precos_base` para `preco_insercao`.
-
----
-
-### Listar Produtos Sincronizados (Paginado)
-
-GET /api/produtos-precos
-
-Deve retornar os produtos processados com seus respectivos preços de forma paginada.
-A paginação deve aceitar parâmetros de controle via query string.
-
----
-
-## Como executar o projeto?
-
-{Esta seção deve ser preenchida pelo candidato com as instruções necessárias para execução da aplicação.}
