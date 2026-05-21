@@ -4,95 +4,58 @@
 ![PHP 8.4](https://img.shields.io/badge/php-8.4.0-1B09AB?size&logo=php&logoColor=1B09AB&style=flat-square)
 ![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?size&logo=laravel&logoColor=FF2D20&style=flat-square)
 
-A criação da estrutura base foi realizada utilizando as ferramentas [λ.cli](https://github.com/jmurowaniecki/lambda), [λ{ ᴳᴿᴼᵁᴺᴰ … }](https://github.com/jmurowaniecki/ground) e [Cornerstone](https://github.com/jmurowaniecki/cornerstone), disponibilizando infraestrutura em Docker Compose com facilitação de uso via `Makefile`.
-
-```
-λ add {makefile,ion.{compose.{nginx,php-fpm},editorconfig}}
-```
-
-A criação do projeto inicial foi realizada com a execução do comando `composer create-project laravel/laravel app` na raiz do projeto utilizando o container `composer`, via `make tty-composer`.
-
-Foi adicionado para verificar os endpoints, um serviço do Swagger via `make composer require "darkaonline/l5-swagger"` e configurado via `make artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"`
-
+Aplicação backend responsável pelo processamento, transformação e sincronização de dados de produtos e preços, utilizando Views SQL para padronização das informações e disponibilizando os dados por meio de uma API REST.
 
 
 ## Primeiros passos
 
 Para realizar a instalação e montagem dos containers execute o comando `make install` que é um alias para o comando `docker compose build --no-cache --pull`.
 
-## Objetivo
 
-Desenvolver uma aplicação backend responsável pelo processamento, transformação e sincronização de dados de produtos e preços, utilizando Views SQL para padronização das informações e disponibilizando os dados por meio de uma API REST.
+## Passo a passo da estrutura
 
----
+A criação da estrutura base foi realizada utilizando as ferramentas [λ.cli](https://github.com/jmurowaniecki/lambda), [λ{ ᴳᴿᴼᵁᴺᴰ … }](https://github.com/jmurowaniecki/ground) e [Cornerstone](https://github.com/jmurowaniecki/cornerstone), disponibilizando infraestrutura em Docker Compose com facilitação de uso via `Makefile`.
 
-## Requisitos Técnicos
+```sh
+λ add {makefile,ion.{compose.{nginx,php-fpm},editorconfig}}
+```
 
-Tecnologias obrigatórias:
+A instalação e configuração dos requisitos pode ser feita manualmente, adicionando os containers presentes no diretório de serviço `./.../docker` no `docker-compose.yaml`, realizando o download e configuração respectivamente do Composer e Laravel, atendendo os requisitos tecnológicos obrigatórios:
 
-* PHP 8.0+
-* Laravel 11.0+
-* SQLite
-* Docker
-* Docker Compose
+Tecnologia     |      Versão
+---------------|:----------------:
+PHP 8.0+       | _8.4 FPM Alpine_
+Laravel 11.0+  | _13_
+SQLite         | _3_
+Docker         | _29.4.1_
+Docker Compose | _v5.1.3_
 
----
+A criação do projeto inicial foi realizada com a execução do comando `composer create-project laravel/laravel app` na raiz do projeto utilizando o container `composer`, via `make tty-composer`.
 
-## Restrições Obrigatórias
+Foi adicionado para verificar os endpoints, um serviço do Swagger via `make run-composer require "darkaonline/l5-swagger"` e configurado via `make run-artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"`.
 
-O projeto deve:
+Foram criadas migrations para as tabelas  `produtos_base` e `precos_base` com o seguinte comando:
 
-* Rodar integralmente via Docker.
-* Possuir arquivo `docker-compose.yml`.
-* Expor exclusivamente endpoints de API REST.
-* Conter testes automatizados.
-* Incluir instruções de execução no `README.md`.
-* Documentar os endpoints disponíveis.
+```sh
+for table in {produtos_base,precos_base,produto_insercao,preco_insercao,produtos_view,precos_view}; \
+do make run-artisan make:migration ${table}; \
+done
+```
 
-O projeto não deve:
+## Modelagem e Processamento de Banco de Dados
 
-* Exigir instalação de dependências na máquina host além do Docker.
-* Conter qualquer tipo de interface web.
+- Modelagem das tabelas base e destino
+- Processamento via Views SQL
+- Normalização de dados
+- Persistência de registros ativos
 
----
+```sh
+for action in {migrate,db:seed}; \
+do make run-artisan ${action}; \
+done
+```
 
-## Modelagem de Banco de Dados
-
-### Tabelas de Origem
-
-Devem ser criadas duas tabelas base:
-
-* `produtos_base`
-* `precos_base`
-
-O script de criação das tabelas base encontra-se na raiz do projeto.
-
-### Tabelas de Destino
-
-Devem ser criadas duas tabelas para armazenamento dos dados processados:
-
-* `produto_insercao`
-* `preco_insercao`
-
-Considere modelagem adequada, chaves e índices quando necessário.
-
----
-
-## Processamento com Views SQL
-
-A transformação dos dados deve ser realizada obrigatoriamente por meio de Views SQL.
-
-Devem ser criadas:
-
-* Uma View para produtos.
-* Uma View para preços.
-
-As Views devem contemplar:
-
-* Normalização dos dados.
-* Processamento apenas de registros ativos.
-
----
+Com as tabelas de origem e destino criadas, foi implemenatdo normalização dos dados nas migrations das respecivas views.
 
 ## Processo de Sincronização
 

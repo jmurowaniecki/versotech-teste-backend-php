@@ -8,10 +8,10 @@ use OpenApi\Attributes as OA;
 
 #[OA\Info(
     version: "1.0.0",
-    description: "API documentation for my project",
-    title: "My Laravel 13 API"
+    description: "Aplicação backend responsável pelo processamento, transformação e sincronização de dados de produtos e preços, utilizando Views SQL para padronização das informações e disponibilizando os dados por meio de uma API REST.",
+    title: "Versottech - Teste Backend PHP"
 )]
-abstract class Controller extends BaseController
+class API extends BaseController
 {
 
     #[OA\Get(
