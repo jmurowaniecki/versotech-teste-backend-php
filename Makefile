@@ -29,6 +29,18 @@ build-%: # Build application with given profile.
 
 clean: # Clean generated and temporaries.
 	$(call TRACE,Cleaning…)
+	@docker compose run --rm \
+		--remove-orphans \
+		--entrypoint sh \
+		--interactive composer rm -Rf node_modules vendor
+
+fix: # Fix Artisan/Composer autoload.
+	@docker compose run --rm \
+		--remove-orphans \
+		--interactive composer dump-autoload -o
+	@docker compose run --rm \
+		--remove-orphans \
+		--interactive artisan optimize:clear
 
 #
 # Service management.
