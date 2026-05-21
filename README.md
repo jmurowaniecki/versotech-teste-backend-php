@@ -12,6 +12,9 @@ A criação da estrutura base foi realizada utilizando as ferramentas [λ.cli](h
 
 A criação do projeto inicial foi realizada com a execução do comando `composer create-project laravel/laravel app` na raiz do projeto utilizando o container `composer`, via `make tty-composer`.
 
+Foi adicionado para verificar os endpoints, um serviço do Swagger via `make composer require "darkaonline/l5-swagger"` e configurado via `make artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"`
+
+
 
 ## Primeiros passos
 

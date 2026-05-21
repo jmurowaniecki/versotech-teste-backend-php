@@ -1,0 +1,21 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My Laravel 13 API",
+        "description": "API documentation for my project",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/test": {
+            "get": {
+                "summary": "Sample API Endpoint",
+                "operationId": "411dce9bfed514489c37e2f082bb43cf",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    }
+}

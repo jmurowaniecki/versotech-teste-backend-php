@@ -3,16 +3,10 @@
 #
 -include ./.../Makefile-help.mk
 
-
-
 TODAY = $(shell date +'%Y%m%d%H%M%S')
-
-
 
 DEFAULT: help
 # For further information see `README.md`.
-
-
 #
 # Repository maintenance options:
 install: build # Alias to build application.
@@ -21,24 +15,17 @@ build: build-all # Build application.
 
 build-all: \
 	build-docker \
-	build-back \
-	build-front
+	build-composer \
+	build-npm
 
 build-docker: # Build Docker containers and services.
 	docker compose build --no-cache --pull
 
-build-back:
-	@docker compose run --rm \
-		--remove-orphans \
-		--interactive composer install
-
-build-front:
-	@docker compose run --rm \
-		--remove-orphans \
-		--interactive npm install
-
 build-%: # Build application with given profile.
 	$(call TRACE,Building,$(*))
+	@docker compose run --rm \
+		--remove-orphans \
+		--interactive $(*) install
 
 clean: # Clean generated and temporaries.
 	$(call TRACE,Cleaning…)
@@ -57,8 +44,17 @@ tty-%: # Execute application with given profile.
 artisan: # Execute Artisan command.
 	@docker compose run --rm \
 		--remove-orphans \
-		--interactive artisan \
-		$(filter-out $@,$(MAKECMDGOALS))
+		--interactive artisan  $(filter-out $@,$(MAKECMDGOALS))
+
+composer: # Execute Composer command.
+	@docker compose run --rm \
+		--remove-orphans \
+		--interactive composer $(filter-out $@,$(MAKECMDGOALS))
+
+npm: # Execute NPM command.
+	@docker compose run --rm \
+		--remove-orphans \
+		--interactive npm $(filter-out $@,$(MAKECMDGOALS))
 
 #
 # Code Quality and Tests
@@ -69,4 +65,3 @@ check-all: \
 
 check-docker-compose: # Check Docker Compose file.
 	docker compose build --check
-
