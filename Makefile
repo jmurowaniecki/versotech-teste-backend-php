@@ -61,7 +61,7 @@ fresh: # Fresh Artisan migrations.
 #
 # Service management.
 start:  # Execute entire project.
-	docker compose up --profile worker
+	docker compose --profile worker up
 
 tty-%: # Execute application with given profile.
 	@docker compose run --rm \
