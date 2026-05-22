@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Console\Commands;
-
-use App\Models\PrecoInsercao;
-use App\Models\ProdutoInsercao;
-use App\Models\VwProdutoNormalizado;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
 use App\Services\ProdutoPrecoSyncService;
+
+use App\Models\PrecoInsercao;
+use App\Models\ProdutoInsercao;
+use App\Models\VwProdutoNormalizado;
 
 #[Signature('sync {type : all|precos|produtos|…}')]
 #[Description('Sincroniza produtos da view normalizada preços, produtos ou ambos.')]

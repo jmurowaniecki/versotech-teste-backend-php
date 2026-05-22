@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\ProdutoInsercao;
 use App\Models\PrecoInsercao;
 use App\Models\VwProdutoNormalizado;
@@ -10,7 +12,6 @@ use App\DTOs\ProdutoNormalizadoDTO;
 use App\DTOs\PrecoNormalizadoDTO;
 use App\Adapters\ProdutoNormalizadoAdapter;
 use App\Adapters\PrecoNormalizadoAdapter;
-use Illuminate\Support\Facades\DB;
 
 class ProdutoPrecoSyncService
 {

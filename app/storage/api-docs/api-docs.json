@@ -16,6 +16,39 @@
                     }
                 }
             }
+        },
+        "/api/produtos-precos": {
+            "get": {
+                "summary": "Deve retornar os produtos processados com seus respectivos preços de forma paginada. A paginação deve aceitar parâmetros de controle via query string.",
+                "operationId": "ab95dd43c4d478ce32d04a4f2954a2e0",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/sincronizar/produtos": {
+            "post": {
+                "summary": "Executa o processo de transformação e sincronização dos dados de `produtos_base` para `produto_insercao`.",
+                "operationId": "f555bda452779a78b2bfcecdb66a52ee",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/sincronizar/precos": {
+            "post": {
+                "summary": "Executa o processo de transformação e sincronização dos dados de `precos_base` para `preco_insercao`.",
+                "operationId": "91506d4823de8576dc90a2f0ffb1d4e0",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
         }
     }
 }
