@@ -17,19 +17,22 @@ class ProdutoPrecoSyncService
     /**
      * Processa e sincroniza todos os produtos e preços normalizados para as tabelas de inserção.
      */
-    public function syncAll()
+    public function syncAll(): int
     {
-        DB::transaction(function () {
-            $this->syncProdutos();
-            $this->syncPrecos();
+        $updateds = 0;
+        DB::transaction(function () use ($updateds) {
+            $updateds += $this->syncProdutos();
+            $updateds += $this->syncPrecos();
         });
+        return $updateds;
     }
 
     /**
      * Sincroniza produtos da view normalizada para inserção.
      */
-    public function syncProdutos()
+    public function syncProdutos(): int
     {
+        $updateds = 0;
         $produtos = VwProdutoNormalizado::all();
         foreach ($produtos as $produtoModel) {
             $from = ProdutoNormalizadoDTO::fromArray($produtoModel->toArray());
@@ -38,17 +41,19 @@ class ProdutoPrecoSyncService
             ProdutoInsercao::updateOrCreate(
                 ['prod_cod' => $data['prod_cod']],
                 $data
-            );
+            ) && $updateds++;
         }
+        return $updateds;
     }
 
     /**
      * Sincroniza preços da view normalizada para inserção.
      */
-    public function syncPrecos()
+    public function syncPrecos(): int
     {
-        $precos = VwPrecoNormalizado::all();
-        foreach ($precos as $precoModel) {
+        $updateds = 0;
+        $osprecos = VwPrecoNormalizado::all();
+        foreach ($osprecos as $precoModel) {
             $from = PrecoNormalizadoDTO::fromArray($precoModel->toArray());
             $data = PrecoNormalizadoAdapter::toPrecoInsercaoArray($from);
 
@@ -61,7 +66,8 @@ class ProdutoPrecoSyncService
             PrecoInsercao::updateOrCreate(
                 $key,
                 $data
-            );
+            ) && $updateds++;
         }
+        return $updateds;
     }
 }

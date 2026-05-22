@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\PrecoInsercao;
+use App\Models\ProdutoInsercao;
+use App\Models\VwProdutoNormalizado;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -75,6 +78,7 @@ class Sync extends Command
     private function invalidType(array $valid): int
     {
         $this->error('Tipo inválido.');
+
         $this->line('Tipos válidos:');
         foreach ($valid as $type) {
             $this->line(" - {$type}");
@@ -88,22 +92,42 @@ class Sync extends Command
      */
     public function runProdutos(): int
     {
-        $this->service->syncProdutos();
-        $this->info('Produtos sincronizados com sucesso.');
+        $this->info("{$this->service->syncProdutos()} Produtos sincronizados com sucesso.");
         return self::SUCCESS;
     }
 
     public function runPrecos(): int
     {
-        $this->service->syncPrecos();
-        $this->info('Preços sincronizados com sucesso.');
+        $this->info("{$this->service->syncPrecos()} Preços sincronizados com sucesso.");
         return self::SUCCESS;
     }
 
     public function runAll(): int
     {
-        $this->service->syncAll();
-        $this->info('Sincronização completa executada.');
+        $this->info("{$this->service->syncAll()} Sincronização completa executada.");
+        return self::SUCCESS;
+    }
+
+    public function runShowView(): int
+    {
+        $view = VwProdutoNormalizado::all();
+        $data = [];
+        foreach ($view as $registry) {
+            $data []= array_values($registry->toArray());
+        }
+        $this->table(array_keys($registry->toArray()), $data);
+        return self::SUCCESS;
+    }
+
+    public function runShowSync(): int
+    {
+        foreach ([ProdutoInsercao::all(), PrecoInsercao::all()] as $source) {
+            $data = [];
+            foreach ($source as $registry) {
+                $data []= array_values($registry->toArray());
+            }
+            $this->table(array_keys($registry->toArray()), $data);
+        }
         return self::SUCCESS;
     }
 }
