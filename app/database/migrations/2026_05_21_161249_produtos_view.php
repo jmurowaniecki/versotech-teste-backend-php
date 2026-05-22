@@ -29,12 +29,20 @@ return new class extends Migration
                     TRIM(
                         REPLACE(
                             REPLACE(
-                                REPLACE(prod_nome, ' ', ' {$delimitador} '),
-                                ' {$delimitador}',
-                                ''
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(prod_nome, ' ', ' {$delimitador} '),
+                                        ' {$delimitador}',
+                                        ''
+                                    ),
+                                    '{$delimitador} ',
+                                    ''
+                                ),
+                                '  ',
+                                ' '
                             ),
-                            '{$delimitador} ',
-                            ''
+                            '  ',
+                            ' '
                         )
                     ) AS nome,
 
@@ -50,7 +58,7 @@ return new class extends Migration
                     REPLACE(REPLACE(LOWER(prod_larg),  'cm', ''), ',', '.') AS largura_original,
                     REPLACE(REPLACE(LOWER(prod_alt),   'cm', ''), ',', '.') AS altura_original,
                     REPLACE(REPLACE(LOWER(prod_prof),  'cm', ''), ',', '.') AS profundidade_original,
-                    replace(replace(TRIM(prod_dt_cad), '.', '-'), '/', '-') AS data_original
+                    REPLACE(REPLACE(TRIM(prod_dt_cad), '.', '-'), '/', '-') AS data_original
                 FROM produtos_base
                 WHERE prod_atv = TRUE
             )

@@ -199,3 +199,32 @@ Arguments:
   type                  ambos|precos|produtos
 ```
 
+## Execução de testes
+
+Os testes podem ser executados diretamente no container, via artisan, através do comando:
+```sh
+docker compose run --rm artisan test 
+```
+
+Ou apenas utilizando o comando `make run-artisan test` no console.
+
+Ambos comandos apresentaram um resultado similar ao informado abaixo:
+
+```txt
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true                                                   0.01s
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                       0.16s
+
+   PASS  Tests\Feature\VwPrecoNormalizadoTest
+  ✓ parses and normalizes price and fields                              0.11s
+  ✓ sem preco as null                                                   0.01s
+
+   PASS  Tests\Feature\VwProdutoNormalizadoTest
+  ✓ normalizes and converts fields                                      0.01s
+  ✓ ignores inactive products                                           0.01s
+
+  Tests:    6 passed (19 assertions)
+  Duration: 0.44s
+```
