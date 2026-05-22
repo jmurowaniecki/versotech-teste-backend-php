@@ -39,8 +39,6 @@ services:
 
   php:
     <<: *app
-    ports:
-      - '9000:9000'
 
   queue:
     <<: *app

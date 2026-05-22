@@ -6,11 +6,17 @@ use App\Http\Controllers\API;
 use App\Http\Controllers\ProdutoPrecoController;
 use App\Http\Controllers\SincronizacaoController;
 
-Route::get('/api/test', [API::class, 'testEndpoint']);
 
-Route::prefix('api/sincronizar')->group(function () {
-    Route::post('/produtos', [SincronizacaoController::class, 'produtos']);
-    Route::post('/precos', [SincronizacaoController::class, 'precos']);
+Route::prefix('/api')->group(function () {
+    Route::get('/test', [API::class, 'testEndpoint']);
+    Route::get('/csrf_token', [API::class, 'csrfToken']);
+    Route::get('/produtos-precos', [ProdutoPrecoController::class, 'index']);
+
+    Route::prefix('/sincronizar')->group(function () {
+        Route::post('/produtos', [SincronizacaoController::class, 'produtos']);
+        Route::post('/precos', [SincronizacaoController::class, 'precos']);
+    });
 });
 
-Route::get('/api/produtos-precos', [ProdutoPrecoController::class, 'index']);
+
+

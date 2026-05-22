@@ -16,6 +16,7 @@ class SincronizacaoController extends Controller
 
     #[OA\Post(
         path: "/api/sincronizar/produtos",
+        tags: ["Sincronização"],
         summary: "Executa o processo de transformação e sincronização dos dados de `produtos_base` para `produto_insercao`.",
         responses: [
             new OA\Response(response: 200, description: "Success")
@@ -32,6 +33,7 @@ class SincronizacaoController extends Controller
 
     #[OA\Post(
         path: "/api/sincronizar/precos",
+        tags: ["Sincronização"],
         summary: "Executa o processo de transformação e sincronização dos dados de `precos_base` para `preco_insercao`.",
         responses: [
             new OA\Response(response: 200, description: "Success")

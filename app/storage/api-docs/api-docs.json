@@ -8,8 +8,25 @@
     "paths": {
         "/api/test": {
             "get": {
-                "summary": "Sample API Endpoint",
+                "tags": [
+                    "Gerenciamento"
+                ],
+                "summary": "Healthcheck",
                 "operationId": "1b33127de7cb07248ed587160cf7b1f6",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/csrf_token": {
+            "get": {
+                "tags": [
+                    "Gerenciamento"
+                ],
+                "summary": "Retorna CSRF Token da sessão atual.",
+                "operationId": "d21a39fc8c91328f5043579f4082936e",
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -19,6 +36,9 @@
         },
         "/api/produtos-precos": {
             "get": {
+                "tags": [
+                    "Sincronização"
+                ],
                 "summary": "Deve retornar os produtos processados com seus respectivos preços de forma paginada. A paginação deve aceitar parâmetros de controle via query string.",
                 "operationId": "ab95dd43c4d478ce32d04a4f2954a2e0",
                 "responses": {
@@ -30,6 +50,9 @@
         },
         "/api/sincronizar/produtos": {
             "post": {
+                "tags": [
+                    "Sincronização"
+                ],
                 "summary": "Executa o processo de transformação e sincronização dos dados de `produtos_base` para `produto_insercao`.",
                 "operationId": "f555bda452779a78b2bfcecdb66a52ee",
                 "responses": {
@@ -41,6 +64,9 @@
         },
         "/api/sincronizar/precos": {
             "post": {
+                "tags": [
+                    "Sincronização"
+                ],
                 "summary": "Executa o processo de transformação e sincronização dos dados de `precos_base` para `preco_insercao`.",
                 "operationId": "91506d4823de8576dc90a2f0ffb1d4e0",
                 "responses": {
@@ -50,5 +76,15 @@
                 }
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Gerenciamento",
+            "description": "Endpoints gerenciamento do serviços, execução de testes, …"
+        },
+        {
+            "name": "Sincronização",
+            "description": "Endpoints para sincronização de Preços, Produtos, …"
+        }
+    ]
 }

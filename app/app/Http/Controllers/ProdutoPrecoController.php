@@ -12,6 +12,7 @@ class ProdutoPrecoController extends Controller
 {
     #[OA\Get(
         path: "/api/produtos-precos",
+        tags: ["Sincronização"],
         summary: "Deve retornar os produtos processados com seus respectivos preços de forma paginada. A paginação deve aceitar parâmetros de controle via query string.",
         responses: [
             new OA\Response(response: 200, description: "Success")

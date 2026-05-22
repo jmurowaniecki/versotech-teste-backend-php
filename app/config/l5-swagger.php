@@ -12,7 +12,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                  */
-                'api' => '',
+                'api' => env('SWAGGER_ENABLED', false) ? '' : null,
             ],
             'paths' => [
                 /*
